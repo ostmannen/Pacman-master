@@ -17,18 +17,18 @@ namespace pacman
         private int currentHealth;
         private int currentScore;
         //public readonly AssetManager assets; 
+
         public Gui() : base("pacman"){}
         public override void Create(Scene scene)
         {
             base.Create(scene);
             sprite.TextureRect = new IntRect(0,0,18,18);
-            //ändra kordianter
             scoreText = new Text();
             scoreText.CharacterSize = 50;
-            scoreText.Font= 
             scoreText.Font = new Font("assets/pixel-font.ttf");
             scoreText.DisplayedString = "Score";
             currentHealth= maxHealth;
+            scene.GainScore += OnGainScore;
         }
         public override void render(RenderTarget target)
         {
@@ -37,7 +37,6 @@ namespace pacman
                 sprite.TextureRect = i < currentHealth
                 ? new IntRect(72, 36, 18,18)
                 : new IntRect(72,0 ,18,18);
-
                 base.render(target);
                 sprite.Position += new Vector2f(18,0);
             }
@@ -50,6 +49,14 @@ namespace pacman
         private void OnLoseHealth(Scene scene, int amount){
             currentHealth -= amount;
             if (currentHealth <= 0){
+                DontDestroyOnload = false;
+                scene.loader.Reload();
+            }
+        }
+        private void OnGainScore(Scene scene, int amount){
+            currentScore += 100;
+            if (!scene.FindByType<Coin>(out _)){
+                DontDestroyOnload = true;
                 scene.loader.Reload();
             }
         }

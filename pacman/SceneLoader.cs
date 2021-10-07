@@ -46,7 +46,6 @@ namespace pacman
             int y = 0;
             int x = 0;
             
-            
             foreach (var line in File.ReadLines(file, Encoding.UTF8))
             {
                 
@@ -61,10 +60,10 @@ namespace pacman
                 y++;
                 x = 0;
             }
-            currentScene = nextScene;
             nextScene = "";
-            scene.spawn(new Gui());
-           
+            if (!scene.FindByType<Gui>(out _)){
+                scene.spawn(new Gui());
+            }
         }
         public void Load(string scene) => nextScene = scene;
         public void Reload() => nextScene = currentScene;

@@ -10,7 +10,9 @@ namespace pacman
     { 
         private string texturename; 
         protected readonly Sprite sprite;
-        public bool dead; 
+        public bool dead;
+        public bool DontDestroyOnload;
+        
 
         protected Entity(string texturename){
             this.texturename = texturename;

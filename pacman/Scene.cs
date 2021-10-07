@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace pacman
 {
     public delegate void ValueChangedEvent(Scene scene, int value);
-    
+
     public sealed class Scene
     {
         public event ValueChangedEvent GainScore;
@@ -45,21 +45,26 @@ namespace pacman
             for (int i = 0; i < entities.Count;)
             {
                 Entity entity = entities[i];
-                if (entity.dead){
+                if (entity.dead)
+                {
                     entities.RemoveAt(i);
-
                 }
                 else i++;
             }
-            if (scoreGained != 0){
+            if (scoreGained != 0)
+            {
                 GainScore?.Invoke(this, scoreGained);
                 scoreGained = 0;
             }
-            if (lostHealth != 0){
+            if (lostHealth != 0)
+            {
                 LoseHealth?.Invoke(this, scoreGained);
+                lostHealth = 0;
             }
-            if (candyCounter != 0){
+            if (candyCounter != 0)
+            {
                 CandyEaten?.Invoke(this, candyCounter);
+                candyCounter = 0;
             }
         }
         public void RenderAll(RenderTarget target)
@@ -68,7 +73,6 @@ namespace pacman
             {
                 entities[i].render(target);
             }
-            
         }
         public bool FindByType<T>(out T found) where T : Entity
         {
@@ -88,8 +92,11 @@ namespace pacman
             for (int i = entities.Count - 1; i >= 0; i--)
             {
                 Entity entity = entities[i];
-                entities.RemoveAt(i);
-                entity.Destroy(this);
+                if (!entity.DontDestroyOnload)
+                {
+                    entities.RemoveAt(i);
+                    entity.Destroy(this);
+                }
             }
         }
         public IEnumerable<Entity> FindIntersects(FloatRect bounds)

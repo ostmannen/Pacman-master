@@ -37,12 +37,17 @@ namespace pacman
             else if (Keyboard.IsKeyPressed(Left))
             {
                 dir = 2; moving = true;
+
             }
             else if (Keyboard.IsKeyPressed(Down))
             {
                 dir = 3; moving = true;
             }
-            if (isFree(scene, dir)) return dir;
+            if (isFree(scene, dir)) 
+            {
+                return dir;
+            }
+
             if (!isFree(scene, direction)) moving = false;
             return direction;
         }
