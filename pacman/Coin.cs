@@ -18,7 +18,7 @@ namespace pacman
         protected override void CollideWith(Scene scene, Entity entity)
         {
             if (entity is Pacman){
-                scene.PublishGainScore(100);
+                scene.events.PublishGainScore(100);
                 dead = true;
             }
         }

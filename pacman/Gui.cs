@@ -13,7 +13,7 @@ namespace pacman
     public class Gui : Entity
     {
         private Text scoreText;
-        private int maxHealth;
+        private int maxHealth = 5;
         private int currentHealth;
         private int currentScore;
         //public readonly AssetManager assets; 
@@ -24,11 +24,12 @@ namespace pacman
             base.Create(scene);
             sprite.TextureRect = new IntRect(0,0,18,18);
             scoreText = new Text();
-            scoreText.CharacterSize = 50;
+            scoreText.CharacterSize = 24;
             scoreText.Font = new Font("assets/pixel-font.ttf");
             scoreText.DisplayedString = "Score";
             currentHealth= maxHealth;
-            scene.GainScore += OnGainScore;
+            scene.events.GainScore += OnGainScore;
+            scene.events.LoseHealth += OnLoseHealth;
         }
         public override void render(RenderTarget target)
         {
@@ -54,7 +55,7 @@ namespace pacman
             }
         }
         private void OnGainScore(Scene scene, int amount){
-            currentScore += 100;
+            currentScore += amount;
             if (!scene.FindByType<Coin>(out _)){
                 DontDestroyOnload = true;
                 scene.loader.Reload();

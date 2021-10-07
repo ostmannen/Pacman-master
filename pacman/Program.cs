@@ -23,7 +23,7 @@ namespace pacman
                     window.DispatchEvents();
                     float deltaTime = clock.Restart().AsSeconds();
                     deltaTime = MathF.Min(deltaTime, 0.01f);
-                    window.Clear(new Color(223, 246, 245));
+                    window.Clear(new Color(44, 149, 195));
                     if (deltaTime > 0.1){
                         deltaTime = 0.1f;
                     }

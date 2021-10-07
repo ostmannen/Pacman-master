@@ -18,7 +18,8 @@ namespace pacman
             speed = 100.0f;
             base.Create(scene);
             sprite.TextureRect = new IntRect(0, 0, 18, 18);
-            scene.LoseHealth += OnLoseHealth;
+            scene.events.LoseHealth += OnLoseHealth;
+            
         }
         private void OnLoseHealth(Scene scene, int amount){
             reset();
@@ -54,7 +55,12 @@ namespace pacman
         public override void Destroy(Scene scene)
         {
             base.Destroy(scene);
-            scene.LoseHealth -= OnLoseHealth;
+            scene.events.LoseHealth -= OnLoseHealth;
+        }
+        public override void Update(Scene scene, float deltaTime)
+        {
+            base.Update(scene, deltaTime);
+            sprite.TextureRect = new IntRect(0,direction * 18, 18, 18);
         }
     }
 }

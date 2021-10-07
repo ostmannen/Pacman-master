@@ -6,28 +6,21 @@ using System.Collections.Generic;
 
 namespace pacman
 {
-    public delegate void ValueChangedEvent(Scene scene, int value);
 
     public sealed class Scene
     {
-        public event ValueChangedEvent GainScore;
-        public event ValueChangedEvent LoseHealth;
-        public event ValueChangedEvent CandyEaten;
+        
         private List<Entity> entities;
         public readonly SceneLoader loader;
+        public readonly EventManager events;
         public readonly AssetManager assets;
-        private int scoreGained;
-        private int lostHealth;
-        private int candyCounter;
-        public void PublishGainScore(int amount) => scoreGained += amount;
-        public void PublishLoseHealth(int amount) => lostHealth -= amount;
-        public void PublishEatenCandy(int amount) => candyCounter -= amount;
-
         public Scene()
         {
             loader = new SceneLoader();
             entities = new List<Entity>();
             assets = new AssetManager();
+            events = new EventManager();
+
         }
         public void spawn(Entity entity)
         {
@@ -36,6 +29,7 @@ namespace pacman
         }
         public void UpdateAll(float deltaTime)
         {
+            events.Update(this);
             loader.HandleSceneLoad(this);
             for (int i = 0; i < entities.Count; i++)
             {
@@ -50,21 +44,6 @@ namespace pacman
                     entities.RemoveAt(i);
                 }
                 else i++;
-            }
-            if (scoreGained != 0)
-            {
-                GainScore?.Invoke(this, scoreGained);
-                scoreGained = 0;
-            }
-            if (lostHealth != 0)
-            {
-                LoseHealth?.Invoke(this, scoreGained);
-                lostHealth = 0;
-            }
-            if (candyCounter != 0)
-            {
-                CandyEaten?.Invoke(this, candyCounter);
-                candyCounter = 0;
             }
         }
         public void RenderAll(RenderTarget target)
